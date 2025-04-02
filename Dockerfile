@@ -15,6 +15,12 @@ RUN apt-get update && apt-get install -y git
 
 RUN git --version
 
+RUN pip install --upgrade pip
+
 RUN pip install pybind11
+
+RUN apt-get install python3-dev
+
+RUN apt-get install cmake
 
 COPY . .
