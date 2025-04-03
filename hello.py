@@ -1,4 +1,7 @@
-print('hello world')
+"""
+A simple script to test that dumbpy was built correctly
+"""
 
-import pybind11
+import dumbpy as dp
 
+dp.say_hello('Christian Geils')
