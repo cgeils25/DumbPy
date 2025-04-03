@@ -1,30 +1,57 @@
 #include <pybind11/pybind11.h>
 #include <iostream>
-#include "vector.cpp"
+#include "vector.h"
 
 namespace py = pybind11;
 
-class Matrix {
+class Matrix 
+{
+    int numRows;
+    int numCols;
     std::vector<Vector> data;
 
     public:
-        Matrix(py::list data) {
-            int numRows = py::len(data);
-            int numCols = py::len(data[0]);
+        Matrix(int numRows, int numCols) 
+        {
+            this->data = std::vector<Vector>(numRows, Vector(numCols));
+        }
 
-            this->data = std::vector<Vector>();
+        void setValues(py::list data)
+        {
+            for (int i = 0; i < numRows; i++) 
+            {
 
-            for (int i = 0; i < numRows; i++) {
-                // this is dumb in terms of memory efficiency
-                this->data.push_back(Vector(data[i]));
+                if (py::len(data[i]) != numCols) 
+                {
+                    throw std::invalid_argument("Number of columns in row " + std::to_string(i) + " does not match expected. Expected " + std::to_string(numCols) + " but got " + std::to_string(py::len(data[i])));
+                }
+
+                Vector row = Vector(numCols);
+
+                row.setValues(data[i]);
+
+                this->data[i] = row;
             }
         }
-
-        std::pair<int, int> getSize() {
-            return {(data.size()), data[0].getSize()};
+        
+        int getNumRows() 
+        {
+            return data.size();
         }
 
-        void print() {
+        int getNumCols() 
+        {
+            return data[0].getSize();
+        }
+        
+        std::pair<int, int> getSize() 
+        {
+            // the actual shape
+            return {getNumRows(), getNumCols()};
+        }
+
+        void print() 
+        {
             std::cout << "[";
 
             for (int i = 0; i < (data.size() - 1); i++) 
@@ -38,7 +65,14 @@ class Matrix {
             std::cout << "]" << std::endl;
         }
 
-        Vector operator[](int index) {
+        Vector operator[](int index) 
+        {
+            if (index < 0 || index >= data.size()) 
+            {
+                // python automatically converts this to an IndexError
+                throw std::out_of_range("Index out of range");
+            }
+
             return data[index];
         }
 };

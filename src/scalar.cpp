@@ -15,7 +15,7 @@ class Scalar
             return value;
         }
 
-        void printValue()
+        void print()
         {
             std::cout << value << std::endl;
         }
