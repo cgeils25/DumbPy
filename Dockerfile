@@ -15,9 +15,9 @@ RUN apt-get update && apt-get install -y git
 
 RUN git --version
 
-RUN apt-get install cmake
+RUN apt-get update && apt-get install cmake
 
-RUN apt-get install make
+RUN apt-get update && apt-get install make
 
 RUN source build.sh
 
