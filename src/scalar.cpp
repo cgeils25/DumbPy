@@ -9,6 +9,7 @@ void sayHello(std::string name) {
 }
 
 PYBIND11_MODULE(dumbpy, m) {
-    m.doc() = "A simple hello world module";
+    m.doc() = "A simple implementation of NumPy, written in C++ with python bindings through pybind11";
     m.def("say_hello", &sayHello);
 }
+
