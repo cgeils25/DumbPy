@@ -5,3 +5,5 @@ CMakeFiles
 bin
 *.cmake
 .vscode
+.DS_Store
+
