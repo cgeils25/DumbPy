@@ -1,14 +1,14 @@
 echo "Building DumbPy binaries..."
 
-cmake .
+cmake . &&
 
-make 
+make &&
 
-mkdir -p bin
+mkdir -p bin &&
 
-mv *.so bin
+mv *.so bin &&
 
-export PYTHONPATH="${PYTHONPATH}:bin/"
+export PYTHONPATH="${PYTHONPATH}:bin/" &&
 
 echo "
 DumbPy binary built and moved to bin directory. DumbPy can now be imported with 
