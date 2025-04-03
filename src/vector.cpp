@@ -1,6 +1,7 @@
 #include <pybind11/pybind11.h>
 #include <iostream>
 #include <vector>
+#include <string>
 
 namespace py = pybind11;
 
@@ -39,16 +40,23 @@ class Vector
             return data.size();
         }
 
-        void printNoNewline() 
+        std::string toString() 
         {
-            std::cout << "[";
+            std::string result = "[";
 
             for (int i = 0; i < (data.size() - 1); i++) 
             {
-                std::cout << data[i] << ", ";
+                result += std::to_string(data[i]) + ", ";
             }
 
-            std::cout << data[data.size() - 1] << "]";
+            result += std::to_string(data[data.size() - 1]) + "]";
+
+            return result;
+        }
+
+        void printNoNewline() 
+        {
+            std::cout << toString();
         }
 
         void print()

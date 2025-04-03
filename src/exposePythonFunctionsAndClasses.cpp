@@ -19,7 +19,8 @@ PYBIND11_MODULE(dumbpy, m) {
     py::class_<Scalar>(m, "Scalar")
         .def(py::init<float>(), py::arg("value"))
         .def("get_value", &Scalar::getValue)
-        .def("print", &Scalar::print);
+        .def("print", &Scalar::print)
+        .def("__repr__", &Scalar::toString);
 
     py::class_<Vector>(m, "Vector")
         .def(py::init<int>(), py::arg("num_elements"))
@@ -27,7 +28,8 @@ PYBIND11_MODULE(dumbpy, m) {
         .def("get_size", &Vector::getSize)
         .def("print", &Vector::print)
         .def("__getitem__", &Vector::operator[])
-        .def("__len__", &Vector::getSize);
+        .def("__len__", &Vector::getSize)
+        .def("__repr__", &Vector::toString);
 
     py::class_<Matrix>(m, "Matrix")
         .def(py::init<int, int>(), py::arg("num_rows"), py::arg("num_cols"))
@@ -35,7 +37,8 @@ PYBIND11_MODULE(dumbpy, m) {
         .def("get_size", &Matrix::getSize)
         .def("print", &Matrix::print)
         .def("__getitem__", &Matrix::operator[])
-        .def("__len__", &Matrix::getNumRows);
+        .def("__len__", &Matrix::getNumRows)
+        .def("__repr__", &Matrix::toString);
 
     auto math = m.def_submodule("math", "Math operations for Scalar, Vector, and Matrix types");
 
@@ -56,6 +59,10 @@ PYBIND11_MODULE(dumbpy, m) {
     math.def("vector_subtract", &vectorSubtract, py::arg("vector_1"), py::arg("vector_2"));
     math.def("vector_multiply", &vectorMultiply, py::arg("vector_1"), py::arg("vector_2"));
     math.def("vector_divide", &vectorDivide, py::arg("vector_1"), py::arg("vector_2"));
-
+    math.def("vector_power", &vectorPower, py::arg("vector_1"), py::arg("vector_2"));
+    math.def("vector_sqrt", &vectorSqrt, py::arg("vector"));
+    math.def("vector_exp", &vectorExp, py::arg("vector"));
+    math.def("vector_ln", &vectorLn, py::arg("vector"));
+    math.def("vector_log", &vectorLog, py::arg("argument_vector"), py::arg("base_vector"));
 }
 

@@ -1,5 +1,6 @@
 #include <pybind11/pybind11.h>
 #include <iostream>
+#include <string>
 
 namespace py = pybind11;
 
@@ -15,9 +16,14 @@ class Scalar
             return value;
         }
 
+        std::string toString() 
+        {
+            return std::to_string(value);
+        }
+
         void print()
         {
-            std::cout << value << std::endl;
+            std::cout << toString() << std::endl;
         }
 };
 

@@ -1,6 +1,7 @@
 #include <pybind11/pybind11.h>
 #include <iostream>
 #include "vector.h"
+#include <string>
 
 namespace py = pybind11;
 
@@ -50,19 +51,23 @@ class Matrix
             return {getNumRows(), getNumCols()};
         }
 
-        void print() 
+        std::string toString() 
         {
-            std::cout << "[";
+            std::string result = "[";
 
             for (int i = 0; i < (data.size() - 1); i++) 
             {
-                data[i].printNoNewline();
-                std::cout << ", " << std::endl;
+                result += data[i].toString() + ", " +"\n";
             }
 
-            data[data.size() - 1].printNoNewline();
-            
-            std::cout << "]" << std::endl;
+            result += data[data.size() - 1].toString() + "]";
+
+            return result;
+        }
+
+        void print() 
+        {
+            std::cout << toString() << std::endl;
         }
 
         Vector operator[](int index) 
