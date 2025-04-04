@@ -1,8 +1,8 @@
 # DumbPy - Like NumPy, but Slower
 
-This is a personal project I built to help me understand C++ and how to create python wrappers for C++ code with pybind11. 
+This is a personal project I built to help me understand how to write optimized C++ and how to create python wrappers for C++ code with pybind11. 
 
-It's a from-scratch implementation of a stripped-down version of NumPy written with a C++ backend and wrapped with a Python frontend.
+It's a from-scratch implementation of a numpy-like scientific computing library written with a C++ backend and wrapped with a Python frontend.
 
 This project has no external dependencies other than the python interpreter itself, GCC, and pybind11.
 
@@ -38,3 +38,26 @@ To test DumbPy:
 ```bash
 python test.py
 ```
+
+## Some Examples
+
+### Scalars
+
+...will add more later...
+
+### Vectors
+```python
+import dumbpy as dp
+
+data = [1, 2, 3]
+
+v = dp.Vector(num_elements=len(data))
+
+v.set_values(values=data)
+```
+
+...will add more later...
+
+### Matrices
+
+...will add more later...
