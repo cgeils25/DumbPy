@@ -22,9 +22,9 @@ PYBIND11_MODULE(dumbpy, m) {
         .def("print", &Scalar::print)
         .def("__repr__", &Scalar::toString);
 
-    py::class_<Vector>(m, "Vector")
+    py::class_<Vector>(m, "Vector") // could make this _vector to wrap with python later
         .def(py::init<int>(), py::arg("num_elements"))
-        .def("set_values", &Vector::setValues, py::arg("data"))
+        .def("set_values", &Vector::setValuesVector, py::arg("values"))
         .def("get_size", &Vector::getSize)
         .def("print", &Vector::print)
         .def("__getitem__", &Vector::operator[])
@@ -33,7 +33,7 @@ PYBIND11_MODULE(dumbpy, m) {
 
     py::class_<Matrix>(m, "Matrix")
         .def(py::init<int, int>(), py::arg("num_rows"), py::arg("num_cols"))
-        .def("set_values", &Matrix::setValues, py::arg("data"))
+        .def("set_values", &Matrix::setValuesMatrix, py::arg("values"))
         .def("get_size", &Matrix::getSize)
         .def("print", &Matrix::print)
         .def("__getitem__", &Matrix::operator[])
@@ -64,5 +64,8 @@ PYBIND11_MODULE(dumbpy, m) {
     math.def("vector_exp", &vectorExp, py::arg("vector"));
     math.def("vector_ln", &vectorLn, py::arg("vector"));
     math.def("vector_log", &vectorLog, py::arg("argument_vector"), py::arg("base_vector"));
+
+    //matrix operations
+    math.def("matmul", &MatMul, py::arg("matrix_1"), py::arg("matrix_2"));
 }
 
