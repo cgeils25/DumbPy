@@ -15,21 +15,23 @@ class Matrix
         Matrix(int numRows, int numCols) 
         {
             this->data = std::vector<Vector>(numRows, Vector(numCols));
+            this->numRows = numRows;
+            this->numCols = numCols;
         }
 
-        void setValues(py::list data)
+        void setValuesMatrix(py::list values)
         {
             for (int i = 0; i < numRows; i++) 
             {
 
-                if (py::len(data[i]) != numCols) 
+                if (py::len(values[i]) != numCols) 
                 {
-                    throw std::invalid_argument("Number of columns in row " + std::to_string(i) + " does not match expected. Expected " + std::to_string(numCols) + " but got " + std::to_string(py::len(data[i])));
+                    throw std::invalid_argument("Number of columns in row " + std::to_string(i) + " does not match expected. Expected " + std::to_string(numCols) + " but got " + std::to_string(py::len(values[i])));
                 }
 
                 Vector row = Vector(numCols);
 
-                row.setValues(data[i]);
+                row.setValuesVector(values[i]);
 
                 this->data[i] = row;
             }
