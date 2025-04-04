@@ -16,11 +16,11 @@ class Vector
             this->data = std::vector<float>(numElements);
         }
 
-        void setValues(py::list data) 
+        void setValuesVector(py::list values) 
         {
             for (int i = 0; i < numElements; i++) 
             {
-                this->data[i] = data[i].cast<float>();
+                this->data[i] = values[i].cast<float>();
             }
         }
 
@@ -61,7 +61,7 @@ class Vector
 
         void print()
         {
-            this->printNoNewline();
+            printNoNewline();
             std::cout << std::endl;
         }
 
