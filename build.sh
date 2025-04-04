@@ -8,6 +8,7 @@ mkdir -p bin &&
 
 mv *.so bin &&
 
+# so python can import dumbpy
 export PYTHONPATH="${PYTHONPATH}:bin/" &&
 
 echo """
