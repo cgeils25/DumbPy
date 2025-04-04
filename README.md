@@ -17,7 +17,7 @@ As long as you've got
 ```
 python >= 3.11
 GCC >= 15.0.0
-cmake >= 4.0.0
+cmake >= 3.25.1
 make >= 3.81
 ```
 
