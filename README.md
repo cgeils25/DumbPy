@@ -95,7 +95,7 @@ To compare matrix multiplication implemented with pure python to DumbPy, run:
 python benchmark.py
 ```
 
-On my system (2021 Macbook Pro, M1 Pro, 16 Gb RAM), the results were:
+On my system (2020 Macbook Pro, M1 Pro, 16 Gb RAM), the results were:
 
 ```bash
 Python time: 47.233 seconds
