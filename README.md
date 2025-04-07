@@ -1,6 +1,6 @@
 # DumbPy - Like NumPy, but Slower
 
-This is a personal project I built to help me understand how to write optimized C++ and how to create python wrappers for C++ code with pybind11. 
+This is a project I built to help me understand how to write optimized C++ and how to create python wrappers for C++ code with pybind11. 
 
 It's a from-scratch implementation of a numpy-like scientific computing library written with a C++ backend and wrapped with a Python frontend, including a full unit testing suite.
 
@@ -58,10 +58,46 @@ import dumbpy as dp
 data = [1, 2, 3]
 
 v = dp.Vector(data)
+
+dp.math.add(v, 6)
 ```
 
-...will add more later...
+Output:
+
+```bash
+[7.000000, 8.000000, 9.000000]
+```
 
 ### Matrices
 
-...will add more later...
+```python
+import dumbpy as dp
+
+data = [[1, 2, 3], [4, 5, 6]]
+
+m = dp.Matrix(data)
+
+dp.math.power(m, 2)
+```
+
+Output:
+
+```bash
+[[1.000000, 4.000000, 9.000000], 
+[16.000000, 25.000000, 36.000000]]
+```
+
+## Benchmark
+
+To compare matrix multiplication implemented with pure python to DumbPy, run:
+
+```bash
+python benchmark.py
+```
+
+On my system (2021 Macbook Pro, M1 Pro, 16 Gb RAM), the results were:
+
+```bash
+Python time: 47.233 seconds
+DumbPy time: 10.621 seconds
+```
