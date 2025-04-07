@@ -102,6 +102,25 @@ class Matrix
             return data[index];
         }
 
+        float& operator[](py::tuple i_j) 
+        {
+            if (i_j.size() != 2) 
+            {
+                throw std::invalid_argument("Index must be a tuple of size 2");
+            }
+
+            int i = i_j[0].cast<int>();
+            int j = i_j[1].cast<int>();
+
+            if (i < 0 || i >= numRows || j < 0 || j >= numCols) 
+            {
+                // python automatically converts this to an IndexError
+                throw std::out_of_range("Index out of range");
+            }
+
+            return data[i][j];
+        }
+
         bool operator==(Matrix& other) 
         {
             if (this->numRows != other.getNumRows() || this->numCols != other.getNumCols()) 
