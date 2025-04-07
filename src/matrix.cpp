@@ -19,11 +19,26 @@ class Matrix
             this->numCols = numCols;
         }
 
+        Matrix(py::list values) 
+        {
+            this->numRows = py::len(values);
+            this->numCols = py::len(values[0]);
+            this->data = std::vector<Vector>(numRows, Vector(numCols));
+
+            setValuesMatrix(values);
+        }
+
         void setValuesMatrix(py::list values)
         {
             for (int i = 0; i < numRows; i++) 
             {
+                // check if the row is a list    
+                if (!py::isinstance<py::list>(values[i])) 
+                {
+                    throw std::invalid_argument("Row " + std::to_string(i) + " is not a list");
+                }
 
+                // check if the row has the same number of columns as the first row
                 if (py::len(values[i]) != numCols) 
                 {
                     throw std::invalid_argument("Number of columns in row " + std::to_string(i) + " does not match expected. Expected " + std::to_string(numCols) + " but got " + std::to_string(py::len(values[i])));
@@ -39,12 +54,12 @@ class Matrix
         
         int getNumRows() 
         {
-            return data.size();
+            return this->numRows;
         }
 
         int getNumCols() 
         {
-            return data[0].getSize();
+            return this->numCols;
         }
         
         std::pair<int, int> getSize() 

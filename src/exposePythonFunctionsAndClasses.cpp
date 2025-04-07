@@ -5,6 +5,7 @@
 
 #include "dumbpyTypes.h"
 #include "math/dumbpyMath.h"
+#include "transformations/dumbpyTransformations.h"
 
 namespace py = pybind11;
 
@@ -12,60 +13,77 @@ void sayHello(std::string name) {
     std::cout << "Hello " << name << "!" << std::endl;
 }
 
-PYBIND11_MODULE(dumbpy, m) {
+PYBIND11_MODULE(_dumbpy_core, m) {
     m.doc() = "A simple hello world module";
-    m.def("say_hello", &sayHello, py::arg("name") = "World");
+    m.def("_say_hello", &sayHello, py::arg("name") = "World");
 
-    py::class_<Scalar>(m, "Scalar")
-        .def(py::init<float>(), py::arg("value"))
-        .def("get_value", &Scalar::getValue)
-        .def("print", &Scalar::print)
-        .def("__repr__", &Scalar::toString);
-
-    py::class_<Vector>(m, "Vector") // could make this _vector to wrap with python later
-        .def(py::init<int>(), py::arg("num_elements"))
+    py::class_<Vector>(m, "_vector") 
+        .def(py::init<py::list>(), py::arg("values"))
         .def("set_values", &Vector::setValuesVector, py::arg("values"))
-        .def("get_size", &Vector::getSize)
+        .def("size", &Vector::getSize)
         .def("print", &Vector::print)
         .def("__getitem__", &Vector::operator[])
         .def("__len__", &Vector::getSize)
-        .def("__repr__", &Vector::toString);
+        .def("__repr__", &Vector::toString)
+        .def("__getitem__", &Vector::operator[])
+        // just add a method to vector, this isfucking confusing 
+        .def("__setitem__", [](Vector& self, int index, float value) { self[index] = value; }, py::arg("index"), py::arg("value"));
 
-    py::class_<Matrix>(m, "Matrix")
-        .def(py::init<int, int>(), py::arg("num_rows"), py::arg("num_cols"))
+    py::class_<Matrix>(m, "_matrix")
+        .def(py::init<py::list>(), py::arg("values"))
         .def("set_values", &Matrix::setValuesMatrix, py::arg("values"))
-        .def("get_size", &Matrix::getSize)
+        .def("size", &Matrix::getSize)
         .def("print", &Matrix::print)
         .def("__getitem__", &Matrix::operator[])
         .def("__len__", &Matrix::getNumRows)
         .def("__repr__", &Matrix::toString);
+        // add a set item. copilot messed this up
 
-    auto math = m.def_submodule("math", "Math operations for Scalar, Vector, and Matrix types");
-
-    //scalar operations
-    math.def("scalar_add", &scalarAdd, py::arg("scalar_1"), py::arg("scalar_2"));
-    math.def("scalar_subtract", &scalarSubtract, py::arg("scalar_1"), py::arg("scalar_2"));
-    math.def("scalar_multiply", &scalarMultiply, py::arg("scalar_1"), py::arg("scalar_2"));
-    math.def("scalar_divide", &scalarDivide, py::arg("scalar_1"), py::arg("scalar_2"));
-    math.def("scalar_power", &scalarPower, py::arg("scalar_1"), py::arg("scalar_2"));
-    math.def("scalar_sqrt", &scalarSqrt, py::arg("scalar"));
-    math.def("scalar_exp", &scalarExp, py::arg("scalar"));
-    math.def("scalar_ln", &scalarLn, py::arg("scalar"));
-    math.def("scalar_log", &scalarLog, py::arg("argument_scalar"), py::arg("base_scalar"));
+    //math operations
+    auto math = m.def_submodule("_math", "Math operations for Vector and Matrix types");
 
     //vector operations
-    math.def("dot_product", &dotProduct, py::arg("vector_1"), py::arg("vector_2"));
-    math.def("vector_add", &vectorAdd, py::arg("vector_1"), py::arg("vector_2"));
-    math.def("vector_subtract", &vectorSubtract, py::arg("vector_1"), py::arg("vector_2"));
-    math.def("vector_multiply", &vectorMultiply, py::arg("vector_1"), py::arg("vector_2"));
-    math.def("vector_divide", &vectorDivide, py::arg("vector_1"), py::arg("vector_2"));
-    math.def("vector_power", &vectorPower, py::arg("vector_1"), py::arg("vector_2"));
-    math.def("vector_sqrt", &vectorSqrt, py::arg("vector"));
-    math.def("vector_exp", &vectorExp, py::arg("vector"));
-    math.def("vector_ln", &vectorLn, py::arg("vector"));
-    math.def("vector_log", &vectorLog, py::arg("argument_vector"), py::arg("base_vector"));
+    math.def("add", static_cast<Vector (*)(Vector&, float)>(&add), py::arg("v1"), py::arg("scalar"));
+    math.def("add", static_cast<Vector (*)(Vector&, Vector&)>(&add), py::arg("v1"), py::arg("v2"));
+    math.def("subtract", static_cast<Vector (*)(Vector&, float)>(&subtract), py::arg("v1"), py::arg("scalar"));
+    math.def("subtract", static_cast<Vector (*)(Vector&, Vector&)>(&subtract), py::arg("v1"), py::arg("v2"));
+    math.def("multiply", static_cast<Vector (*)(Vector&, float)>(&multiply), py::arg("v1"), py::arg("scalar"));
+    math.def("multiply", static_cast<Vector (*)(Vector&, Vector&)>(&multiply), py::arg("v1"), py::arg("v2"));
+    math.def("divide", static_cast<Vector (*)(Vector&, float)>(&divide), py::arg("v1"), py::arg("scalar"));
+    math.def("divide", static_cast<Vector (*)(Vector&, Vector&)>(&divide), py::arg("v1"), py::arg("v2"));
+    math.def("dot_product", &dotProduct, py::arg("v1"), py::arg("v2"));
+    math.def("power", static_cast<Vector (*)(Vector&, float)>(&power), py::arg("v1"), py::arg("exponent"));
+    math.def("power", static_cast<Vector (*)(Vector&, Vector&)>(&power), py::arg("v1"), py::arg("v2"));
+    math.def("sqrt", static_cast<Vector (*)(Vector&)>(&sqrt), py::arg("v1"));
+    math.def("exp", static_cast<Vector (*)(Vector&)>(&exp), py::arg("v1"));
+    math.def("ln", static_cast<Vector (*)(Vector&)>(&ln), py::arg("v1"));
+    math.def("log", static_cast<Vector (*)(Vector&, float)>(&log), py::arg("v1"), py::arg("base"));
+    math.def("log", static_cast<Vector (*)(Vector&, Vector&)>(&log), py::arg("v1"), py::arg("v2"));
 
     //matrix operations
-    math.def("matmul", &MatMul, py::arg("matrix_1"), py::arg("matrix_2"));
+    math.def("add", static_cast<Matrix (*)(Matrix&, float)>(&add), py::arg("m1"), py::arg("scalar"));
+    math.def("add", static_cast<Matrix (*)(Matrix&, Matrix&)>(&add), py::arg("m1"), py::arg("m2"));
+    math.def("subtract", static_cast<Matrix (*)(Matrix&, float)>(&subtract), py::arg("m1"), py::arg("scalar"));
+    math.def("subtract", static_cast<Matrix (*)(Matrix&, Matrix&)>(&subtract), py::arg("m1"), py::arg("m2"));
+    math.def("multiply", static_cast<Matrix (*)(Matrix&, float)>(&multiply), py::arg("m1"), py::arg("scalar"));
+    math.def("multiply", static_cast<Matrix (*)(Matrix&, Matrix&)>(&multiply), py::arg("m1"), py::arg("m2"));
+    math.def("divide", static_cast<Matrix (*)(Matrix&, float)>(&divide), py::arg("m1"), py::arg("scalar"));
+    math.def("divide", static_cast<Matrix (*)(Matrix&, Matrix&)>(&divide), py::arg("m1"), py::arg("m2"));
+    math.def("mat_mul", static_cast<Matrix (*)(Matrix&, Matrix&)>(&matMul), py::arg("m1"), py::arg("m2"));
+    math.def("mat_mul", static_cast<Vector (*)(Matrix&, Vector&)>(&matMul), py::arg("m"), py::arg("v"));
+    math.def("power", static_cast<Matrix (*)(Matrix&, float)>(&power), py::arg("m1"), py::arg("exponent"));
+    math.def("power", static_cast<Matrix (*)(Matrix&, Matrix&)>(&power), py::arg("m1"), py::arg("m2"));
+    math.def("sqrt", static_cast<Matrix (*)(Matrix&)>(&sqrt), py::arg("m1"));
+    math.def("exp", static_cast<Matrix (*)(Matrix&)>(&exp), py::arg("m1"));
+    math.def("ln", static_cast<Matrix (*)(Matrix&)>(&ln), py::arg("m1"));
+    math.def("log", static_cast<Matrix (*)(Matrix&, float)>(&log), py::arg("m1"), py::arg("base"));
+    math.def("log", static_cast<Matrix (*)(Matrix&, Matrix&)>(&log), py::arg("m1"), py::arg("m2"));
+
+    // transformations
+    auto transformations = m.def_submodule("_transformations", "Transformations for DumbPy types");
+
+    transformations.def("transpose", &transpose, py::arg("m"));
+
+    
 }
 

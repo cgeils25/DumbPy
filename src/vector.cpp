@@ -16,6 +16,14 @@ class Vector
             this->data = std::vector<float>(numElements);
         }
 
+        Vector(py::list values) 
+        {
+            this->numElements = py::len(values);
+            this->data = std::vector<float>(numElements);
+
+            setValuesVector(values);
+        }
+
         void setValuesVector(py::list values) 
         {
             for (int i = 0; i < numElements; i++) 
@@ -37,7 +45,7 @@ class Vector
 
         int getSize() 
         {
-            return data.size();
+            return this->numElements;
         }
 
         std::string toString() 
@@ -65,7 +73,8 @@ class Vector
             std::cout << std::endl;
         }
 
-        float operator[](int index) 
+        // return a reference so that the value can be accessed and assigned
+        float& operator[](int index) 
         {
             if (index < 0 || index >= data.size()) 
             {

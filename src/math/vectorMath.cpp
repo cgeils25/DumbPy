@@ -1,3 +1,7 @@
+/**
+ * Operations where vectors are the first or only argument
+ */
+
 #include "../vector.h"
 
 float dotProduct(Vector& v1, Vector& v2)
@@ -17,7 +21,20 @@ float dotProduct(Vector& v1, Vector& v2)
     return result;
 }
 
-Vector vectorAdd(Vector& v1, Vector& v2)
+Vector add(Vector& v1, float scalar)
+{
+    Vector result = Vector(v1.getSize());
+
+    for (int i = 0; i < v1.getSize(); i++) 
+    {
+        float val = v1[i] + scalar;
+        result[i] = val;
+    }
+
+    return result;
+}
+
+Vector add(Vector& v1, Vector& v2)
 {
     if (v1.getSize() != v2.getSize()) 
     {
@@ -29,13 +46,26 @@ Vector vectorAdd(Vector& v1, Vector& v2)
     for (int i = 0; i < v1.getSize(); i++) 
     {
         float val = v1[i] + v2[i];
-        result.setValue(i, val);
+        result[i] = val;
     }
 
     return result;
 }
 
-Vector vectorSubtract(Vector& v1, Vector& v2)
+Vector subtract(Vector& v1, float scalar)
+{
+    Vector result = Vector(v1.getSize());
+
+    for (int i = 0; i < v1.getSize(); i++) 
+    {
+        float val = v1[i] - scalar;
+        result[i] = val;
+    }
+
+    return result;
+}
+
+Vector subtract(Vector& v1, Vector& v2)
 {
     if (v1.getSize() != v2.getSize()) 
     {
@@ -47,13 +77,26 @@ Vector vectorSubtract(Vector& v1, Vector& v2)
     for (int i = 0; i < v1.getSize(); i++) 
     {
         float val = v1[i] - v2[i];
-        result.setValue(i, val);
+        result[i] = val;
     }
 
     return result;
 }
 
-Vector vectorMultiply(Vector& v1, Vector& v2)
+Vector multiply(Vector& v1, float scalar)
+{
+    Vector result = Vector(v1.getSize());
+
+    for (int i = 0; i < v1.getSize(); i++) 
+    {
+        float val = v1[i] * scalar;
+        result[i] = val;
+    }
+
+    return result;
+}
+
+Vector multiply(Vector& v1, Vector& v2)
 {
     if (v1.getSize() != v2.getSize()) {
         throw std::invalid_argument("Vectors must be of the same size. Instead got sizes " + std::to_string(v1.getSize()) + " and " + std::to_string(v2.getSize()));
@@ -64,13 +107,30 @@ Vector vectorMultiply(Vector& v1, Vector& v2)
     for (int i = 0; i < v1.getSize(); i++) 
     {
         float val = v1[i] * v2[i];
-        result.setValue(i, val);
+        result[i] = val;
     }
 
     return result;
 }
 
-Vector vectorDivide(Vector& v1, Vector& v2)
+Vector divide(Vector& v1, float scalar)
+{
+    if (scalar == 0) {
+        throw std::invalid_argument("Division by zero");
+    }
+
+    Vector result = Vector(v1.getSize());
+
+    for (int i = 0; i < v1.getSize(); i++) 
+    {
+        float val = v1[i] / scalar;
+        result[i] = val;
+    }
+
+    return result;
+}
+
+Vector divide(Vector& v1, Vector& v2)
 {
     if (v1.getSize() != v2.getSize()) {
         throw std::invalid_argument("Vectors must be of the same size. Instead got sizes " + std::to_string(v1.getSize()) + " and " + std::to_string(v2.getSize()));
@@ -84,13 +144,27 @@ Vector vectorDivide(Vector& v1, Vector& v2)
             throw std::invalid_argument("Division by zero");
         }
         float val = v1[i] / v2[i];
-        result.setValue(i, val);
+        result[i] = val;
     }
 
     return result;
 }
 
-Vector vectorPower(Vector& v1, Vector& v2)
+Vector power(Vector& v, float exponent)
+{
+    // add error handling
+    Vector result = Vector(v.getSize());
+
+    for (int i = 0; i < v.getSize(); i++) 
+    {
+        float val = pow(v[i], exponent);
+        result[i] = val;
+    }
+
+    return result;
+}
+
+Vector power(Vector& v1, Vector& v2)
 {
     if (v1.getSize() != v2.getSize()) 
     {
@@ -102,13 +176,13 @@ Vector vectorPower(Vector& v1, Vector& v2)
     for (int i = 0; i < v1.getSize(); i++) 
     {
         float val = pow(v1[i], v2[i]);
-        result.setValue(i, val);
+        result[i] = val;
     }
 
     return result;
 }
 
-Vector vectorSqrt(Vector& v1)
+Vector sqrt(Vector& v1)
 {
     Vector result = Vector(v1.getSize());
 
@@ -119,26 +193,26 @@ Vector vectorSqrt(Vector& v1)
             throw std::invalid_argument("Cannot take square root of negative number");
         }
         float val = sqrt(v1[i]);
-        result.setValue(i, val);
+        result[i] = val;
     }
 
     return result;
 }
 
-Vector vectorExp(Vector& v1)
+Vector exp(Vector& v1)
 {
     Vector result = Vector(v1.getSize());
 
     for (int i = 0; i < v1.getSize(); i++) 
     {
         float val = exp(v1[i]);
-        result.setValue(i, val);
+        result[i] = val;
     }
 
     return result;
 }
 
-Vector vectorLn(Vector& v1)
+Vector ln(Vector& v1)
 {
     Vector result = Vector(v1.getSize());
 
@@ -149,13 +223,30 @@ Vector vectorLn(Vector& v1)
             throw std::invalid_argument("Cannot take logarithm of number <= 0");
         }
         float val = log(v1[i]);
-        result.setValue(i, val);
+        result[i] = val;
     }
 
     return result;
 }
 
-Vector vectorLog(Vector& v1, Vector& base)
+Vector log(Vector& v1, float base)
+{
+    Vector result = Vector(v1.getSize());
+
+    for (int i = 0; i < v1.getSize(); i++) 
+    {
+        if (v1[i] <= 0) 
+        {
+            throw std::invalid_argument("Cannot take logarithm of number <= 0");
+        }
+        float val = log(v1[i]) / log(base);
+        result[i] = val;
+    }
+
+    return result;
+}
+
+Vector log(Vector& v1, Vector& base)
 {
     Vector result = Vector(v1.getSize());
 
@@ -166,8 +257,9 @@ Vector vectorLog(Vector& v1, Vector& base)
             throw std::invalid_argument("Cannot take logarithm of number <= 0");
         }
         float val = log(v1[i]) / log(base[i]);
-        result.setValue(i, val);
+        result[i] = val;
     }
 
     return result;
 }
+
