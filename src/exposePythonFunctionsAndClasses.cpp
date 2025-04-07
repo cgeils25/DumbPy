@@ -25,7 +25,6 @@ PYBIND11_MODULE(_dumbpy_core, m) {
         .def("__getitem__", &Vector::operator[])
         .def("__len__", &Vector::getSize)
         .def("__repr__", &Vector::toString)
-        .def("__getitem__", &Vector::operator[])
         // just add a method to vector, this isfucking confusing 
         .def("__setitem__", [](Vector& self, int index, float value) { self[index] = value; }, py::arg("index"), py::arg("value"))
         .def("__eq__", [](Vector& self, Vector& other) { return self == other; }, py::arg("other"));
@@ -39,10 +38,6 @@ PYBIND11_MODULE(_dumbpy_core, m) {
         .def("__getitem__", &Matrix::operator[])
         .def("__len__", &Matrix::getNumRows)
         .def("__repr__", &Matrix::toString)
-        .def("__getitem__", &Matrix::operator[])
-        
-        // make sure this setitem works
-        .def("__setitem__", [](Matrix& self, int index, Vector& value) { self[index] = value; }, py::arg("index"), py::arg("value"))
         .def("__eq__", [](Matrix& self, Matrix& other) { return self == other; }, py::arg("other"));
 
     //math operations
