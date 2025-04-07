@@ -1,4 +1,4 @@
-from tests import test_vector, test_matrix, test_vector_math, test_matrix_math
+from tests import test_vector, test_matrix, test_vector_math, test_matrix_math, test_transform
 
 def run_functions_in_module(module):
     for i in dir(module):
@@ -18,6 +18,9 @@ def main():
 
     print("-"*50, "Testing matrix math...", "-"*50)
     run_functions_in_module(test_matrix_math)
+
+    print("-"*50, "Testing transformations...", "-"*50)
+    run_functions_in_module(test_transform)
     
 
 if __name__ == "__main__":
