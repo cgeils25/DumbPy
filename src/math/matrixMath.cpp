@@ -338,3 +338,13 @@ Matrix log(Matrix& m1, Matrix& base)
 
     return result;
 } 
+
+// float determinant(Matrix m)
+// {
+//     if (m.getNumRows() != m.getNumCols()) 
+//     {
+//         throw std::invalid_argument("Matrix must be square to calculate determinant");
+//     }
+
+
+// }

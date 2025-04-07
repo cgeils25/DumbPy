@@ -9,11 +9,13 @@
 
 namespace py = pybind11;
 
-void sayHello(std::string name) {
+void sayHello(std::string name) 
+{
     std::cout << "Hello " << name << "!" << std::endl;
 }
 
-PYBIND11_MODULE(_dumbpy_core, m) {
+PYBIND11_MODULE(_dumbpy_core, m) 
+{
     m.doc() = "A simple Python frontend for a numpy-like C++ library";
     m.def("_say_hello", &sayHello, py::arg("name") = "World");
 
@@ -25,7 +27,6 @@ PYBIND11_MODULE(_dumbpy_core, m) {
         .def("__getitem__", &Vector::operator[])
         .def("__len__", &Vector::getSize)
         .def("__repr__", &Vector::toString)
-        // just add a method to vector, this isfucking confusing 
         .def("__setitem__", [](Vector& self, int index, float value) { self[index] = value; }, py::arg("index"), py::arg("value"))
         .def("__eq__", [](Vector& self, Vector& other) { return self == other; }, py::arg("other"));
 
@@ -38,6 +39,8 @@ PYBIND11_MODULE(_dumbpy_core, m) {
         .def("__getitem__", &Matrix::operator[])
         .def("__len__", &Matrix::getNumRows)
         .def("__repr__", &Matrix::toString)
+        // fix this somehow. could just make a literal setitem and then expose it as the [] operator
+        // .def("__setitem__", [](Matrix& self, py::tuple i_j, float value) { self[i_j[0]][i_j[1]] = value; }, py::arg("i"), py::arg("j"), py::arg("value"))
         .def("__eq__", [](Matrix& self, Matrix& other) { return self == other; }, py::arg("other"));
 
     //math operations
