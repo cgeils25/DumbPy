@@ -4,33 +4,26 @@ dp.say_hello('Christian Geils')
 
 data = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
 
-# Create a scalar and set its value
-print("Scalar:")
-scalar = dp.Scalar(10)
-scalar.print()
-
 # Create a vector and set its values
 print("Vector:")
-v1 = dp.Vector(len(data))
-v1.set_values(data[0])
+v1 = dp.Vector(data[0])
 v1.print()
 
-v2 = dp.Vector(len(data[0]))
-v2.set_values(data[1])
+v2 = dp.Vector(data[1])
 
 print(dp.math.dot_product(v1, v2))
-dp.math.vector_add(v1, v2).print()
-dp.math.vector_subtract(v1, v2).print()
-dp.math.vector_multiply(v1, v2).print()
-dp.math.vector_divide(v1, v2).print()
-dp.math.vector_power(v1, v2).print()
-dp.math.vector_sqrt(v1).print()
-dp.math.vector_exp(v1).print()
-dp.math.vector_ln(v1).print()
-dp.math.vector_log(v1, v2).print()
+dp.math.add(v1, v2).print()
+dp.math.subtract(v1, v2).print()
+dp.math.multiply(v1, v2).print()
+dp.math.divide(v1, v2).print()
+dp.math.power(v1, v2).print()
+dp.math.sqrt(v1).print()
+dp.math.exp(v1).print()
+dp.math.ln(v1).print()
+dp.math.log(v1, v2).print()
 
 
 # Create a matrix and set its values
-m = dp.Matrix(len(data), len(data[0]))
-m.set_values(data)
+print("Matrix:")
+m = dp.Matrix(data)
 m.print()
