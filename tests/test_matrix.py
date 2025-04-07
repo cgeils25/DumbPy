@@ -33,7 +33,7 @@ def test_setitem():
     data = [[1, 2, 3], [4, 5, 6]]
     a = dp.Matrix(data)
 
-    assert a[1][1] == data[1][1], f"Expected {a[1][1]} to be {data[1][1]}"
+    assert a[1, 1] == data[1][1], f"Expected {a[1, 1]} to be {data[1][1]}"
 
     new_val = 4
 
