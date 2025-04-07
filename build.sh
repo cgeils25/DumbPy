@@ -1,3 +1,5 @@
+#!/bin/bash
+
 echo "Compiling DumbPy C++ functions and classes..."
 
 cmake . &&
