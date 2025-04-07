@@ -2,7 +2,7 @@
 
 This is a personal project I built to help me understand how to write optimized C++ and how to create python wrappers for C++ code with pybind11. 
 
-It's a from-scratch implementation of a numpy-like scientific computing library written with a C++ backend and wrapped with a Python frontend.
+It's a from-scratch implementation of a numpy-like scientific computing library written with a C++ backend and wrapped with a Python frontend, including a full unit testing suite.
 
 This project has no external dependencies other than the python interpreter itself, GCC, and pybind11.
 
@@ -31,9 +31,9 @@ To build DumbPy binaries:
 source build.sh
 ```
 
-## Test
+## Tests
 
-To test DumbPy:
+To run unit tests:
 
 ```bash
 python test.py
