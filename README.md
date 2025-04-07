@@ -39,6 +39,16 @@ To test DumbPy:
 python test.py
 ```
 
+## Docs
+
+For more information about submodules, functions, and classes, use (in python):
+
+```python
+import dumbpy as dp
+
+help(dp)
+```
+
 ## Some Examples
 
 ### Vectors
