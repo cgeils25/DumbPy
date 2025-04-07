@@ -6,6 +6,7 @@
 #include "dumbpyTypes.h"
 #include "math/dumbpyMath.h"
 #include "transformations/dumbpyTransformations.h"
+#include "close.h"
 
 namespace py = pybind11;
 
@@ -43,6 +44,10 @@ PYBIND11_MODULE(_dumbpy_core, m)
         // fix this somehow. could just make a literal setitem and then expose it as the [] operator
         .def("__setitem__", [](Matrix& self, py::tuple i_j, float value) {self[i_j] = value;}, py::arg("index"), py::arg("value"))
         .def("__eq__", [](Matrix& self, Matrix& other) { return self == other; }, py::arg("other"));
+
+    // closeness functions
+    m.def("all_close", static_cast<bool (*)(Vector&, Vector&, float)>(&allClose), py::arg("v1"), py::arg("v2"), py::arg("tolerance") = 1e-5, py::doc("Check if two vectors are close to each other within a given tolerance."));
+    m.def("all_close", static_cast<bool (*)(Matrix&, Matrix&, float)>(&allClose), py::arg("m1"), py::arg("m2"), py::arg("tolerance") = 1e-5, py::doc("Check if two matrices are close to each other within a given tolerance."));
 
     //math operations
     auto math = m.def_submodule("_math", "Math operations for Vector and Matrix types");

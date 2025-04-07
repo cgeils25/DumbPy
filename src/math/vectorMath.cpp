@@ -142,6 +142,9 @@ Vector divide(Vector& v1, Vector& v2)
     {
         if (v2[i] == 0) {
             throw std::invalid_argument("Division by zero");
+            
+            // not sure how to make this work:
+            // throw PyExc_ZeroDivisionError("Division by zero");
         }
         float val = v1[i] / v2[i];
         result[i] = val;
