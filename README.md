@@ -6,7 +6,7 @@ It's a from-scratch implementation of a numpy-like scientific computing library 
 
 This project has no external dependencies other than the python interpreter itself, GCC, and pybind11.
 
-For now, my implementation supports scalars, vectors, and 2D matrices, along with some basic transformations and linear algebra operations.
+For now, my implementation supports 1D vectors and 2D matrices, along with some basic transformations and linear algebra operations.
 
 ## Docker
 
@@ -41,19 +41,13 @@ python test.py
 
 ## Some Examples
 
-### Scalars
-
-...will add more later...
-
 ### Vectors
 ```python
 import dumbpy as dp
 
 data = [1, 2, 3]
 
-v = dp.Vector(num_elements=len(data))
-
-v.set_values(values=data)
+v = dp.Vector(data)
 ```
 
 ...will add more later...
