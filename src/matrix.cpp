@@ -7,6 +7,9 @@ namespace py = pybind11;
 
 class Matrix 
 {
+    /*
+    A 2D Matrix class filled with floats. Each row is a vector.
+    */
     int numRows;
     int numCols;
     std::vector<Vector> data;
@@ -87,7 +90,8 @@ class Matrix
             std::cout << toString() << std::endl;
         }
 
-        Vector operator[](int index) 
+        // if you don't return a reference here then assignment doesn't work and thus none of the operations work
+        Vector& operator[](int index) 
         {
             if (index < 0 || index >= data.size()) 
             {
@@ -96,5 +100,28 @@ class Matrix
             }
 
             return data[index];
+        }
+
+        bool operator==(Matrix& other) 
+        {
+            if (this->numRows != other.getNumRows() || this->numCols != other.getNumCols()) 
+            {
+                return false;
+            }
+
+            for (int i = 0; i < this->numRows; i++) 
+            {
+                if (this->data[i] != other[i]) 
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        bool operator!=(Matrix& other) 
+        {
+            return !(*this == other);
         }
 };

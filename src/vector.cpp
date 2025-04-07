@@ -7,6 +7,9 @@ namespace py = pybind11;
 
 class Vector 
 {
+    /*
+    A 1D Vector class filled with floats.
+    */
     int numElements;
     std::vector<float> data;
 
@@ -83,5 +86,28 @@ class Vector
             }
 
             return data[index];
+        }
+
+        bool operator==(Vector& other) 
+        {
+            if (this->numElements != other.getSize()) 
+            {
+                return false;
+            }
+
+            for (int i = 0; i < this->numElements; i++) 
+            {
+                if (this->data[i] != other[i]) 
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        bool operator!=(Vector& other) 
+        {
+            return !(*this == other);
         }
 };
