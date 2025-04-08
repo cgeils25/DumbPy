@@ -39,6 +39,38 @@ To run unit tests:
 python test.py
 ```
 
+Output (expected):
+
+```bash
+=============================================================================================================================
+Running DubmPy unit tests...
+=============================================================================================================================
+-------------------------------------------------- Testing vector class... --------------------------------------------------
+Equality test passed!
+Get item test passed!
+Instantiation test passed!
+Len test passed!
+Repr test passed!
+Set item test passed!
+-------------------------------------------------- Testing matrix class... --------------------------------------------------
+Equality test passed!
+Get item test passed!
+Instantiation test passed!
+
+...
+
+Matrix logarithm test passed!
+Matrix multiplication test passed!
+Matrix power test passed!
+Matrix square root test passed!
+Matrix subtraction test passed!
+-------------------------------------------------- Testing transformations... --------------------------------------------------
+Matrix transpose test passed!
+=============================================================================================================================
+All tests completed.
+
+```
+
 ## Docs
 
 For more information about submodules, functions, and classes, use (in python):

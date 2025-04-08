@@ -7,6 +7,10 @@ def run_functions_in_module(module):
             item()
 
 def main():
+    print("="*125)
+    print('Running DubmPy unit tests...')
+    print("="*125)
+
     print("-"*50, "Testing vector class...", "-"*50)
     run_functions_in_module(test_vector)
 
@@ -21,6 +25,9 @@ def main():
 
     print("-"*50, "Testing transformations...", "-"*50)
     run_functions_in_module(test_transform)
+
+    print("="*125)
+    print("All tests completed.")
     
 
 if __name__ == "__main__":
