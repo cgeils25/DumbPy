@@ -41,7 +41,6 @@ PYBIND11_MODULE(_dumbpy_core, m)
         .def("__getitem__", static_cast<float& (Matrix::*)(py::tuple)>(&Matrix::operator[]), py::arg("index"))
         .def("__len__", &Matrix::getNumRows)
         .def("__repr__", &Matrix::toString)
-        // fix this somehow. could just make a literal setitem and then expose it as the [] operator
         .def("__setitem__", [](Matrix& self, py::tuple i_j, float value) {self[i_j] = value;}, py::arg("index"), py::arg("value"))
         .def("__eq__", [](Matrix& self, Matrix& other) { return self == other; }, py::arg("other"));
 
