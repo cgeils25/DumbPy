@@ -8,7 +8,7 @@ def run_functions_in_module(module):
 
 def main():
     print("="*125)
-    print('Running DubmPy unit tests...')
+    print('Running DumbPy unit tests...')
     print("="*125)
 
     print("-"*50, "Testing vector class...", "-"*50)
