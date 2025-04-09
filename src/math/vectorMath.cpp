@@ -266,3 +266,79 @@ Vector log(Vector& v1, Vector& base)
     return result;
 }
 
+float sum(Vector& v1)
+{
+    float total = 0;
+
+    for (int i = 0; i < v1.getSize(); i++) 
+    {
+        total += v1[i];
+    }
+
+    return total;
+}
+
+float mean(Vector& v1)
+{
+    return sum(v1) / v1.getSize();
+}
+
+float variance(Vector& v1)
+{
+    float m = mean(v1);
+    float total = 0;
+
+    for (int i = 0; i < v1.getSize(); i++) 
+    {
+        total += pow(v1[i] - m, 2);
+    }
+
+    return total / v1.getSize();
+}
+
+float stddev(Vector& v1)
+{
+    return sqrt(variance(v1));
+}
+
+float product(Vector& v1)
+{
+    float total = v1[0];
+
+    for (int i = 1; i < v1.getSize(); i++) 
+    {
+        total *= v1[i];
+    }
+
+    return total;
+}
+
+float min(Vector& v1)
+{
+    float minVal = v1[0];
+
+    for (int i = 1; i < v1.getSize(); i++) 
+    {
+        if (v1[i] < minVal) 
+        {
+            minVal = v1[i];
+        }
+    }
+
+    return minVal;
+}
+
+float max(Vector& v1)
+{
+    float maxVal = v1[0];
+
+    for (int i = 1; i < v1.getSize(); i++) 
+    {
+        if (v1[i] > maxVal) 
+        {
+            maxVal = v1[i];
+        }
+    }
+
+    return maxVal;
+}

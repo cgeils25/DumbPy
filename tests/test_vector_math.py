@@ -13,6 +13,7 @@ def test_vector_add():
 
     print("Addition test passed!")
 
+
 def test_vector_subtract():
     a = dp.Vector([1, 2, 3])
     b = dp.Vector([4, 5, 6])
@@ -24,6 +25,7 @@ def test_vector_subtract():
 
     print("Subtraction test passed!")
 
+
 def test_vector_multiply():
     a = dp.Vector([1, 2, 3])
     b = dp.Vector([4, 5, 6])
@@ -34,6 +36,7 @@ def test_vector_multiply():
     assert d == dp.Vector([2, 4, 6]), f"Expected {d} to be [2, 4, 6]"
 
     print("Multiplication test passed!")
+
 
 def test_vector_divide():
     a = dp.Vector([1, 2, 3])
@@ -53,6 +56,7 @@ def test_vector_divide():
 
     print("Division test passed!")
 
+
 def test_vector_dot_product():
     a = dp.Vector([1, 2, 3])
     b = dp.Vector([4, 5, 6])
@@ -61,12 +65,14 @@ def test_vector_dot_product():
 
     print("Dot product test passed!")
 
+
 def test_vector_sqrt():
     a = dp.Vector([1, 4, 9])
     b = dp.math.sqrt(a)
     assert b == dp.Vector([1.0, 2.0, 3.0]), f"Expected {b} to be [1.0, 2.0, 3.0]"
 
     print("Square root test passed!")
+
 
 def test_vector_exp():
     a = dp.Vector([1, 2, 3])
@@ -78,6 +84,7 @@ def test_vector_exp():
 
     print("Exponential test passed!")
 
+
 def test_vector_ln():
     a = dp.Vector([1, 2, 3])
     result = dp.math.ln(a)
@@ -87,6 +94,7 @@ def test_vector_ln():
     assert result == expected_result, f"Expected {result} to be {expected_result}"
 
     print("Natural logarithm test passed!")
+
 
 def test_vector_log():
     a = dp.Vector([1.0, 2.0, 3.0])
@@ -106,6 +114,7 @@ def test_vector_log():
 
     print("Logarithm test passed!")
 
+
 def test_vector_power():
     a = dp.Vector([1, 2, 3])
     b = dp.Vector([4, 5, 6])
@@ -116,3 +125,67 @@ def test_vector_power():
     assert d == dp.Vector([a_val**2 for a_val in a]), f"Expected {d} to be {[a_val**2 for a_val in a]}"
 
     print("Power test passed!")
+
+
+def test_vector_sum():
+    a = dp.Vector([1, 2, 3, 5])
+    sum_val = dp.math.sum(a)
+
+    assert sum_val == 11, f"Expected sum to be 11, got {sum_val}"
+
+    print("Sum test passed!")
+
+
+def test_vector_mean():
+    a = dp.Vector([1, 2, 3, 5])
+    mean_val = dp.math.mean(a)
+
+    assert mean_val == 2.75, f"Expected mean to be 2.0, got {mean_val}"
+
+    print("Mean test passed!")
+
+
+def test_vector_variance():
+    a = dp.Vector([1, 2, 3])
+    variance_val = dp.math.variance(a)
+
+    assert abs(variance_val - 2./3.) < .001, f"Expected variance to be 2/3, got {variance_val}"
+
+    print("Variance test passed!")
+
+
+def test_vector_stddev():
+    a = dp.Vector([1, 2, 3])
+    stddev_val = dp.math.stddev(a)
+
+    assert abs(stddev_val - (2./3.)**0.5) < .001, f"Expected stddev to be sqrt(2/3), got {stddev_val}"
+
+    print("Standard deviation test passed!")
+
+
+def test_vector_product():
+    a = dp.Vector([1, 2, 3])
+    product_val = dp.math.product(a)
+
+    assert product_val == 6, f"Expected product to be 6, got {product_val}"
+
+    print("Product test passed!")
+
+
+def test_vector_min():
+    a = dp.Vector([1, 2, 3])
+    min_val = dp.math.min(a)
+
+    assert min_val == 1, f"Expected min to be 1, got {min_val}"
+
+    print("Min test passed!")
+
+
+def test_vector_max():
+    a = dp.Vector([1, 2, 3])
+    max_val = dp.math.max(a)
+
+    assert max_val == 3, f"Expected max to be 3, got {max_val}"
+
+    print("Max test passed!")
+

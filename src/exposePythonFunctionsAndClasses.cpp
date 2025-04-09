@@ -68,6 +68,13 @@ PYBIND11_MODULE(_dumbpy_core, m)
     math.def("ln", static_cast<Vector (*)(Vector&)>(&ln), py::arg("v1"), py::doc("Calculate the natural logarithm of a vector element-wise, then return the result as a new vector."));
     math.def("log", static_cast<Vector (*)(Vector&, float)>(&log), py::arg("v1"), py::arg("base"), py::doc("Calculate the logarithm of a vector with a specified base, then return the result as a new vector."));
     math.def("log", static_cast<Vector (*)(Vector&, Vector&)>(&log), py::arg("v1"), py::arg("v2"), py::doc("Calculate the logarithm of a vector with another vector as the base element-wise, then return the result as a new vector."));
+    math.def("sum", &sum, py::arg("v1"), py::doc("Calculate the sum of all elements in a vector, then return the result as a float."));
+    math.def("mean", &mean, py::arg("v1"), py::doc("Calculate the mean of all elements in a vector, then return the result as a float."));
+    math.def("variance", &variance, py::arg("v1"), py::doc("Calculate the variance of all elements in a vector, then return the result as a float."));
+    math.def("stddev", &stddev, py::arg("v1"), py::doc("Calculate the standard deviation of all elements in a vector, then return the result as a float."));
+    math.def("product", &product, py::arg("v1"), py::doc("Calculate the product of all elements in a vector, then return the result as a float."));
+    math.def("min", &min, py::arg("v1"), py::doc("Find the minimum value in a vector, then return the result as a float."));
+    math.def("max", &max, py::arg("v1"), py::doc("Find the maximum value in a vector, then return the result as a float."));
 
     //matrix operations
     math.def("add", static_cast<Matrix (*)(Matrix&, float)>(&add), py::arg("m1"), py::arg("scalar"), py::doc("Add a matrix and a scalar, then return the result as a new matrix."));
