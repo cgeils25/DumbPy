@@ -91,13 +91,13 @@ data = [1, 2, 3]
 
 v = dp.Vector(data)
 
-dp.math.add(v, 6)
+dp.math.dot_product(v, v)
 ```
 
 Output:
 
 ```
-[7.000000, 8.000000, 9.000000]
+14.0
 ```
 
 ### Matrices
