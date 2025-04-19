@@ -339,12 +339,86 @@ Matrix log(Matrix& m1, Matrix& base)
     return result;
 } 
 
-// float determinant(Matrix m)
-// {
-//     if (m.getNumRows() != m.getNumCols()) 
-//     {
-//         throw std::invalid_argument("Matrix must be square to calculate determinant");
-//     }
+Matrix min(Matrix& m1)
+{
+    Matrix result = Matrix(1, m1.getNumCols());
 
+    for (int j = 0; j < m1.getNumCols(); j++) 
+    {
+        float minVal = m1[0][j];
 
-// }
+        for (int i = 1; i < m1.getNumRows(); i++) 
+        {
+            if (m1[i][j] < minVal) 
+            {
+                minVal = m1[i][j];
+            }
+        }
+
+        result[0][j] = minVal;
+    }
+
+    return result;
+}
+
+Matrix min(Matrix& m1, Matrix& m2)
+{
+    if (m1.getNumRows() != m2.getNumRows() || m1.getNumCols() != m2.getNumCols()) 
+    {
+        throw std::invalid_argument("Matrix element-wise min not possible. m1: " + std::to_string(m1.getNumRows()) + "x" + std::to_string(m1.getNumCols()) + " != m2: " + std::to_string(m2.getNumRows()) + "x" + std::to_string(m2.getNumCols()));
+    }
+
+    Matrix result = Matrix(m1.getNumRows(), m1.getNumCols());
+
+    for (int i = 0; i < m1.getNumRows(); i++) 
+    {
+        for (int j = 0; j < m1.getNumCols(); j++) 
+        {
+            result[i][j] = std::min(m1[i][j], m2[i][j]);
+        }
+    }
+
+    return result;
+}
+
+Matrix max(Matrix& m1)
+{
+    Matrix result = Matrix(1, m1.getNumCols());
+
+    for (int j = 0; j < m1.getNumCols(); j++) 
+    {
+        float maxVal = m1[0][j];
+
+        for (int i = 1; i < m1.getNumRows(); i++) 
+        {
+            if (m1[i][j] > maxVal) 
+            {
+                maxVal = m1[i][j];
+            }
+        }
+
+        result[0][j] = maxVal;
+    }
+
+    return result;
+}
+
+Matrix max(Matrix& m1, Matrix& m2)
+{
+    if (m1.getNumRows() != m2.getNumRows() || m1.getNumCols() != m2.getNumCols()) 
+    {
+        throw std::invalid_argument("Matrix element-wise max not possible. m1: " + std::to_string(m1.getNumRows()) + "x" + std::to_string(m1.getNumCols()) + " != m2: " + std::to_string(m2.getNumRows()) + "x" + std::to_string(m2.getNumCols()));
+    }
+
+    Matrix result = Matrix(m1.getNumRows(), m1.getNumCols());
+
+    for (int i = 0; i < m1.getNumRows(); i++) 
+    {
+        for (int j = 0; j < m1.getNumCols(); j++) 
+        {
+            result[i][j] = std::max(m1[i][j], m2[i][j]);
+        }
+    }
+
+    return result;
+}
