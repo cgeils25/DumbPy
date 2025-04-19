@@ -4,8 +4,11 @@
 #include "math.h"
 
 #include "dumbpyTypes.h"
+#include "identity.h"
+#include "onesAndZeroes.h"
 #include "math/dumbpyMath.h"
 #include "transformations/dumbpyTransformations.h"
+#include "random/dumbpyRandom.h"
 #include "close.h"
 
 namespace py = pybind11;
@@ -43,7 +46,17 @@ PYBIND11_MODULE(_dumbpy_core, m)
         .def("__repr__", &Matrix::toString)
         .def("__setitem__", [](Matrix& self, py::tuple i_j, float value) {self[i_j] = value;}, py::arg("index"), py::arg("value"))
         .def("__eq__", [](Matrix& self, Matrix& other) { return self == other; }, py::arg("other"));
+    
+    // identity matrix
+    m.def("identity", &identity, py::arg("size"), py::doc("Create an identity matrix of shape (size, size)."));
+    
+    // ones and zeroes
+    m.def("ones", static_cast<Matrix (*)(int, int)>(&ones), py::arg("num_rows"), py::arg("num_cols"), py::doc("Create a matrix filled with ones."));
+    m.def("ones", static_cast<Vector (*)(int)>(&ones), py::arg("num_elements"), py::doc("Create a vector filled with ones."));
+    m.def("zeros", static_cast<Matrix (*)(int, int)>(&zeros), py::arg("num_rows"), py::arg("num_cols"), py::doc("Create a matrix filled with zeros."));
+    m.def("zeros", static_cast<Vector (*)(int)>(&zeros), py::arg("num_elements"), py::doc("Create a vector filled with zeros."));
 
+    
     // closeness functions
     m.def("all_close", static_cast<bool (*)(Vector&, Vector&, float)>(&allClose), py::arg("v1"), py::arg("v2"), py::arg("tolerance") = 1e-5, py::doc("Check if two vectors are close to each other within a given tolerance."));
     m.def("all_close", static_cast<bool (*)(Matrix&, Matrix&, float)>(&allClose), py::arg("m1"), py::arg("m2"), py::arg("tolerance") = 1e-5, py::doc("Check if two matrices are close to each other within a given tolerance."));
@@ -73,8 +86,8 @@ PYBIND11_MODULE(_dumbpy_core, m)
     math.def("variance", &variance, py::arg("v1"), py::doc("Calculate the variance of all elements in a vector, then return the result as a float."));
     math.def("stddev", &stddev, py::arg("v1"), py::doc("Calculate the standard deviation of all elements in a vector, then return the result as a float."));
     math.def("product", &product, py::arg("v1"), py::doc("Calculate the product of all elements in a vector, then return the result as a float."));
-    math.def("min", &min, py::arg("v1"), py::doc("Find the minimum value in a vector, then return the result as a float."));
-    math.def("max", &max, py::arg("v1"), py::doc("Find the maximum value in a vector, then return the result as a float."));
+    math.def("min", static_cast<float (*)(Vector&)>(&min), py::arg("v1"), py::doc("Find the minimum value in a vector, then return the result as a float."));
+    math.def("max", static_cast<float (*)(Vector&)>(&max), py::arg("v1"), py::doc("Find the maximum value in a vector, then return the result as a float."));
 
     //matrix operations
     math.def("add", static_cast<Matrix (*)(Matrix&, float)>(&add), py::arg("m1"), py::arg("scalar"), py::doc("Add a matrix and a scalar, then return the result as a new matrix."));
@@ -94,12 +107,31 @@ PYBIND11_MODULE(_dumbpy_core, m)
     math.def("ln", static_cast<Matrix (*)(Matrix&)>(&ln), py::arg("m1"), py::doc("Calculate the natural logarithm of a matrix element-wise, then return the result as a new matrix."));
     math.def("log", static_cast<Matrix (*)(Matrix&, float)>(&log), py::arg("m1"), py::arg("base"), py::doc("Calculate the logarithm of a matrix with a specified base, then return the result as a new matrix."));
     math.def("log", static_cast<Matrix (*)(Matrix&, Matrix&)>(&log), py::arg("m1"), py::arg("m2"), py::doc("Calculate the logarithm of a matrix with another matrix as the base element-wise, then return the result as a new matrix."));
+    math.def("min", static_cast<float (*)(Matrix&)>(&min), py::arg("m1"), py::doc("Find the minimum value in a matrix, then return the result as a float."));
+    math.def("min", static_cast<Matrix (*)(Matrix&, Matrix&)>(&min), py::arg("m1"), py::arg("m2"), py::doc("Find the element-wise minimum value in two matrices, then return the result as a new matrix."));
+    math.def("max", static_cast<float (*)(Matrix&)>(&max), py::arg("m1"), py::doc("Find the maximum value in a matrix, then return the result as a float."));
+    math.def("max", static_cast<Matrix (*)(Matrix&, Matrix&)>(&max), py::arg("m1"), py::arg("m2"), py::doc("Find the element-wise maximum value in two matrices, then return the result as a new matrix."));
+
 
     // transformations
     auto transformations = m.def_submodule("_transformations", "Transformations for DumbPy types");
 
     transformations.def("transpose", &transpose, py::arg("m"), py::doc("Transpose a matrix, then return the result as a new matrix."));
 
-    
-}
+    // random generation
+    auto random = m.def_submodule("_random", "Random number generation for DumbPy types");
 
+
+    py::class_<RandomGenerator>(random, "_generator")
+        .def(py::init<int>(), py::arg("seed"), py::doc("Create a RandomGenerator with a specified seed."))
+        .def(py::init<>(), py::doc("Create a RandomGenerator with a random seed."))
+        .def("seed", &RandomGenerator::getSeed, py::doc("Get the seed for the random number generator."))
+        .def("uniform", static_cast<Matrix (RandomGenerator::*)(int, int)>(&RandomGenerator::uniform), py::arg("num_rows"), py::arg("num_cols"), py::doc("Generate a matrix of random numbers sampled from a uniform distribution defined on [0, 1)."))
+        .def("uniform", static_cast<Matrix (RandomGenerator::*)(int, int, float, float)>(&RandomGenerator::uniform), py::arg("num_rows"), py::arg("num_cols"), py::arg("low"), py::arg("high"), py::doc("Generate a matrix of random numbers sampled from a uniform distribution defined on [low, high)."))
+        .def("uniform", static_cast<Vector (RandomGenerator::*)(int)>(&RandomGenerator::uniform), py::arg("num_elements"), py::doc("Generate a vector of random numbers sampled from a uniform distribution defined on [0, 1)."))
+        .def("uniform", static_cast<Vector (RandomGenerator::*)(int, float, float)>(&RandomGenerator::uniform), py::arg("num_elements"), py::arg("low"), py::arg("high"), py::doc("Generate a vector of random numbers sampled from a uniform distribution defined on [low, high)."))
+        .def("normal", static_cast<Matrix (RandomGenerator::*)(int, int)>(&RandomGenerator::normal), py::arg("num_rows"), py::arg("num_cols"), py::doc("Generate a matrix of random numbers sampled from a standard normal distribution (mean 0 and standard deviation 1)."))
+        .def("normal", static_cast<Matrix (RandomGenerator::*)(int, int, float, float)>(&RandomGenerator::normal), py::arg("num_rows"), py::arg("num_cols"), py::arg("mean"), py::arg("std"), py::doc("Generate a matrix of random numbers sampled from a normal distribution with specified mean and standard deviation."))
+        .def("normal", static_cast<Vector (RandomGenerator::*)(int)>(&RandomGenerator::normal), py::arg("num_elements"), py::doc("Generate a vector of random numbers sampled from a standard normal distribution (mean 0 and standard deviation 1)."))
+        .def("normal", static_cast<Vector (RandomGenerator::*)(int, float, float)>(&RandomGenerator::normal), py::arg("num_elements"), py::arg("mean"), py::arg("std"), py::doc("Generate a vector of random numbers sampled from a normal distribution with specified mean and standard deviation."));
+}

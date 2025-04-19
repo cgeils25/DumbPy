@@ -1,4 +1,4 @@
-from tests import test_vector, test_matrix, test_vector_math, test_matrix_math, test_transform, test_ones_and_zeros, test_identity
+from tests import test_vector, test_matrix, test_vector_math, test_matrix_math, test_transform, test_ones_and_zeros, test_identity, test_random
 
 def run_functions_in_module(module):
     for i in dir(module):
@@ -31,6 +31,9 @@ def main():
 
     print("-"*50, "Testing identity matrix...", "-"*50)
     run_functions_in_module(test_identity)
+
+    print("-"*50, "Testing random matrix and vector generation...", "-"*50)
+    run_functions_in_module(test_random)
 
     print("="*125)
     print("All tests completed.")

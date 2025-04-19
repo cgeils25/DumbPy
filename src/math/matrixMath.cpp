@@ -339,26 +339,22 @@ Matrix log(Matrix& m1, Matrix& base)
     return result;
 } 
 
-Matrix min(Matrix& m1)
+float min(Matrix& m1)
 {
-    Matrix result = Matrix(1, m1.getNumCols());
+    float minVal = m1[0][0];
 
-    for (int j = 0; j < m1.getNumCols(); j++) 
+    for (int i = 0; i < m1.getNumRows(); i++) 
     {
-        float minVal = m1[0][j];
-
-        for (int i = 1; i < m1.getNumRows(); i++) 
+        for (int j = 0; j < m1.getNumCols(); j++) 
         {
             if (m1[i][j] < minVal) 
             {
                 minVal = m1[i][j];
             }
         }
-
-        result[0][j] = minVal;
     }
 
-    return result;
+    return minVal;
 }
 
 Matrix min(Matrix& m1, Matrix& m2)
@@ -381,26 +377,22 @@ Matrix min(Matrix& m1, Matrix& m2)
     return result;
 }
 
-Matrix max(Matrix& m1)
+float max(Matrix& m1)
 {
-    Matrix result = Matrix(1, m1.getNumCols());
+    float maxVal = m1[0][0];
 
-    for (int j = 0; j < m1.getNumCols(); j++) 
+    for (int i = 0; i < m1.getNumRows(); i++) 
     {
-        float maxVal = m1[0][j];
-
-        for (int i = 1; i < m1.getNumRows(); i++) 
+        for (int j = 0; j < m1.getNumCols(); j++) 
         {
             if (m1[i][j] > maxVal) 
             {
                 maxVal = m1[i][j];
             }
         }
-
-        result[0][j] = maxVal;
     }
 
-    return result;
+    return maxVal;
 }
 
 Matrix max(Matrix& m1, Matrix& m2)
