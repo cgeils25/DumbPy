@@ -165,6 +165,7 @@ PYBIND11_MODULE(_dumbpy_core, m)
     // loss functions and their derivatives
 
     auto loss = nn.def_submodule("_loss", "Loss functions for DumbPy types");
-    loss.def("mse", &meanSquaredError, py::arg("y_true"), py::arg("y_pred"), py::doc("Calculate the mean squared error between predictions and targets, then return the result as a float."));
+    loss.def("mse",  static_cast<float (*)(float, float)>(&meanSquaredError), py::arg("y_true"), py::arg("y_pred"), py::doc("Calculate the mean squared error between predictions and targets, then return the result as a float."));
+    loss.def("mse", static_cast<float (*)(Vector&, Vector&)>(&meanSquaredError), py::arg("y_true"), py::arg("y_pred"), py::doc("Calculate the mean squared error between predictions and targets, then return the result as a float."));
     loss.def("mse_gradient", &meanSquaredErrorGradient, py::arg("y_true"), py::arg("y_pred"), py::doc("Calculate the derivative of the mean squared error between predictions and targets, then return the result as a new vector."));
 }
