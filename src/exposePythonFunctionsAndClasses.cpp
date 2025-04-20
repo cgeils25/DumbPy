@@ -9,6 +9,10 @@
 #include "math/dumbpyMath.h"
 #include "transformations/dumbpyTransformations.h"
 #include "random/dumbpyRandom.h"
+
+#include "nn/activation.h"
+#include "nn/loss.h"
+
 #include "close.h"
 
 namespace py = pybind11;
@@ -121,7 +125,6 @@ PYBIND11_MODULE(_dumbpy_core, m)
     // random generation
     auto random = m.def_submodule("_random", "Random number generation for DumbPy types");
 
-
     py::class_<RandomGenerator>(random, "_generator")
         .def(py::init<int>(), py::arg("seed"), py::doc("Create a RandomGenerator with a specified seed."))
         .def(py::init<>(), py::doc("Create a RandomGenerator with a random seed."))
@@ -133,5 +136,35 @@ PYBIND11_MODULE(_dumbpy_core, m)
         .def("normal", static_cast<Matrix (RandomGenerator::*)(int, int)>(&RandomGenerator::normal), py::arg("num_rows"), py::arg("num_cols"), py::doc("Generate a matrix of random numbers sampled from a standard normal distribution (mean 0 and standard deviation 1)."))
         .def("normal", static_cast<Matrix (RandomGenerator::*)(int, int, float, float)>(&RandomGenerator::normal), py::arg("num_rows"), py::arg("num_cols"), py::arg("mean"), py::arg("std"), py::doc("Generate a matrix of random numbers sampled from a normal distribution with specified mean and standard deviation."))
         .def("normal", static_cast<Vector (RandomGenerator::*)(int)>(&RandomGenerator::normal), py::arg("num_elements"), py::doc("Generate a vector of random numbers sampled from a standard normal distribution (mean 0 and standard deviation 1)."))
-        .def("normal", static_cast<Vector (RandomGenerator::*)(int, float, float)>(&RandomGenerator::normal), py::arg("num_elements"), py::arg("mean"), py::arg("std"), py::doc("Generate a vector of random numbers sampled from a normal distribution with specified mean and standard deviation."));
+        .def("normal", static_cast<Vector (RandomGenerator::*)(int, float, float)>(&RandomGenerator::normal), py::arg("num_elements"), py::arg("mean"), py::arg("std"), py::doc("Generate a vector of random numbers sampled from a normal distribution with specified mean and standard deviation."))
+        .def("xavier", static_cast<Matrix (RandomGenerator::*)(int, int)>(&RandomGenerator::xavier), py::arg("num_rows"), py::arg("num_cols"), py::doc("Generate a matrix of random numbers sampled according to Xavier initialization (see https://paperswithcode.com/method/xavier-initialization)."));
+
+    // neural network stuff
+
+    auto nn = m.def_submodule("_nn", "Neural network functions for DumbPy types");
+
+    // activation functions and their derivatives
+
+    auto activation = nn.def_submodule("_activation", "Activation functions for DumbPy types");
+
+    activation.def("relu", static_cast<float (*)(float)>(&relu), py::arg("x"), py::doc("Apply the ReLU activation function to a scalar, then return the result as a float."));
+    activation.def("relu_derivative", static_cast<float (*)(float)>(&reluDerivative), py::arg("x"), py::doc("Apply the derivative of the ReLU activation function to a scalar, then return the result as a float."));
+    activation.def("relu", static_cast<Vector (*)(Vector&)>(&relu), py::arg("v1"), py::doc("Apply the ReLU activation function to a vector, then return the result as a new vector."));
+    activation.def("relu_gradient", static_cast<Vector (*)(Vector&)>(&reluGradient), py::arg("v1"), py::doc("Apply the derivative of the ReLU activation function to a vector, then return the result as a new vector."));
+    activation.def("relu", static_cast<Matrix (*)(Matrix&)>(&relu), py::arg("m1"), py::doc("Apply the ReLU activation function to a matrix, then return the result as a new matrix."));
+    activation.def("relu_gradient", static_cast<Matrix (*)(Matrix&)>(&reluGradient), py::arg("m1"), py::doc("Apply the derivative of the ReLU activation function to a matrix, then return the result as a new matrix."));
+
+    activation.def("sigmoid", static_cast<float (*)(float)>(&sigmoid), py::arg("x"), py::doc("Apply the sigmoid activation function to a scalar, then return the result as a float."));
+    activation.def("sigmoid_derivative", static_cast<float (*)(float)>(&sigmoidDerivative), py::arg("x"), py::doc("Apply the derivative of the sigmoid activation function to a scalar, then return the result as a float."));
+    activation.def("sigmoid", static_cast<Vector (*)(Vector&)>(&sigmoid), py::arg("v1"), py::doc("Apply the sigmoid activation function to a vector, then return the result as a new vector."));
+    activation.def("sigmoid_gradient", static_cast<Vector (*)(Vector&)>(&sigmoidGradient), py::arg("v1"), py::doc("Apply the derivative of the sigmoid activation function to a vector, then return the result as a new vector."));
+    activation.def("sigmoid", static_cast<Matrix (*)(Matrix&)>(&sigmoid), py::arg("m1"), py::doc("Apply the sigmoid activation function to a matrix, then return the result as a new matrix."));
+    activation.def("sigmoid_gradient", static_cast<Matrix (*)(Matrix&)>(&sigmoidGradient), py::arg("m1"), py::doc("Apply the derivative of the sigmoid activation function to a matrix, then return the result as a new matrix."));
+
+
+    // loss functions and their derivatives
+
+    auto loss = nn.def_submodule("_loss", "Loss functions for DumbPy types");
+    loss.def("mse", &meanSquaredError, py::arg("y_true"), py::arg("y_pred"), py::doc("Calculate the mean squared error between predictions and targets, then return the result as a float."));
+    loss.def("mse_gradient", &meanSquaredErrorGradient, py::arg("y_true"), py::arg("y_pred"), py::doc("Calculate the derivative of the mean squared error between predictions and targets, then return the result as a new vector."));
 }
