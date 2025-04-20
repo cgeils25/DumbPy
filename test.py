@@ -1,5 +1,6 @@
 from tests import test_vector, test_matrix, test_transform, test_ones_and_zeros, test_identity, test_random
 from tests.math import test_vector_math, test_matrix_math
+from tests.nn import test_activation
 
 def run_functions_in_module(module):
     for i in dir(module):
@@ -35,6 +36,9 @@ def main():
 
     print("-"*50, "Testing random matrix and vector generation...", "-"*50)
     run_functions_in_module(test_random)
+
+    print("-"*50, "Testing activation functions...", "-"*50)
+    run_functions_in_module(test_activation)
 
     print("="*125)
     print("All tests completed.")
