@@ -1,4 +1,5 @@
-from tests import test_vector, test_matrix, test_vector_math, test_matrix_math, test_transform, test_ones_and_zeros, test_identity, test_random
+from tests import test_vector, test_matrix, test_transform, test_ones_and_zeros, test_identity, test_random
+from tests.math import test_vector_math, test_matrix_math
 
 def run_functions_in_module(module):
     for i in dir(module):
