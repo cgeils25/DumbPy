@@ -7,3 +7,5 @@ from dumbpy import math, transform, random
 from dumbpy.say_hello import say_hello
 from dumbpy.matrix import Matrix
 from dumbpy.vector import Vector
+
+from dumbpy import nn
