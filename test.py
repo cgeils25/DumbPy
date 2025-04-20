@@ -1,6 +1,6 @@
 from tests import test_vector, test_matrix, test_transform, test_ones_and_zeros, test_identity, test_random
 from tests.math import test_vector_math, test_matrix_math
-from tests.nn import test_activation
+from tests.nn import test_activation, test_loss
 
 def run_functions_in_module(module):
     for i in dir(module):
@@ -39,6 +39,9 @@ def main():
 
     print("-"*50, "Testing activation functions...", "-"*50)
     run_functions_in_module(test_activation)
+
+    print("-"*50, "Testing loss functions...", "-"*50)
+    run_functions_in_module(test_loss)
 
     print("="*125)
     print("All tests completed.")
