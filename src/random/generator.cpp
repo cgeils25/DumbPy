@@ -217,4 +217,19 @@ class RandomGenerator
 
             return result;
         }
+    
+        Matrix xavier(int numRows, int numCols)
+        {
+            // Xavier initialization for weights
+            // Xavier initialization is defined as a normal distribution with mean 0 and standard deviation sqrt(2 / (numRows + numCols))
+
+            if (numRows <= 0 || numCols <= 0) 
+            {
+                throw std::invalid_argument("Number of rows and columns must be positive integers.");
+            }
+
+            float xavierUpper = sqrt(6) / sqrt(numRows + numCols);
+            
+            return uniform(numRows, numCols, -xavierUpper, xavierUpper);
+        }
 };
