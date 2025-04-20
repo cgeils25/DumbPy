@@ -121,7 +121,7 @@ def test_normal_matrix_given_mean_std():
 def test_uniform_matrix_given_low_high():
     num_matrices = 10_000
     low = -3
-    high = 8
+    high = 2
     num_rows = 25
     num_cols = 50
 
@@ -135,15 +135,21 @@ def test_uniform_matrix_given_low_high():
         
     expected_low = dp.math.multiply(dp.ones(num_rows, num_cols), low)
     expected_high = dp.math.multiply(dp.ones(num_rows, num_cols), high)
+    expected_mean = dp.math.multiply(dp.ones(num_rows, num_cols), (low + high) / 2)
 
     actual_low = dp.math.multiply(dp.ones(num_rows, num_cols), high)
     actual_high = dp.math.multiply(dp.ones(num_rows, num_cols), low)
+    actual_mean = dp.zeros(num_rows, num_cols)
 
     for matrix in results:
         actual_low = dp.math.min(actual_low, matrix)
         actual_high = dp.math.max(actual_high, matrix)
+        actual_mean = dp.math.add(actual_mean, matrix)
+
+    actual_mean = dp.math.divide(actual_mean, num_matrices)
     
     assert dp.all_close(actual_low, expected_low, .1), f"Expected low to be close to {expected_low}, but got {actual_low}"
     assert dp.all_close(actual_high, expected_high, .1), f"Expected high to be close to {expected_high}, but got {actual_high}"
+    assert dp.all_close(actual_mean, expected_mean, .1), f"Expected mean to be close to {expected_mean}, but got {actual_mean}"
 
     print("Uniform matrix generation test passed!")
